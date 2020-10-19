@@ -1,15 +1,74 @@
 <?php
+
 declare(strict_types=1);
+
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+//we are going to use session variables so we need to enable sessions
+session_start();
+
+function whatIsHappening()
+{
+    echo '<h2>$_GET</h2>';
+    var_dump($_GET);
+    echo '<h2>$_POST</h2>';
+    var_dump($_POST);
+    echo '<h2>$_COOKIE</h2>';
+    var_dump($_COOKIE);
+    echo '<h2>$_SESSION</h2>';
+    var_dump($_SESSION);
+}
+
+whatIsHappening(); // call function
+
+/*
+function openConnection() : PDO {
+    // Try to figure out what these should be for you
+    $dbhost    =  "localhost"; //"DB_HOST";//probably localhost
+    $dbuser    = "becode"; //"DB_USER";
+    $dbpass    = "becode123"; //"DB_USER_PASSWORD";
+    $db        = "fixbug"; //"DB_NAME";
+
+    $driverOptions = [
+        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ];
+
+    // Try to understand what happens here
+    $pdo = new PDO('mysql:host='. $dbhost .';dbname='. $db, $dbuser, $dbpass, $driverOptions);
+
+    // Why we do this here
+    return $pdo;
+
+}
+
+//The best way to select data from your database is with prepared statements
+//(this prevents SQL injection attacks), like in the code example below:
+
+$pdo = openConnection();
+$handle = $pdo->prepare('SELECT some_field FROM some_table where id = :id');
+$handle->bindValue(':id', 5);
+$handle->execute();
+$rows = $handle->fetchAll();
+echo htmlspecialchars($rows[0]['some_field']);
+
+//ERROR: Base table or view not found: 1146 Table 'fixbug.some_table'
+// doesn't exist in /var/www/fixing-db-bugs/resources/index.php on line 54
+
+*/
 
 $sports = ['Football', 'Tennis', 'Ping pong', 'Volley ball', 'Rugby', 'Horse riding', 'Swimming', 'Judo', 'Karate'];
 
 function openConnection(): PDO
 {
     // No bugs in this function, just use the right credentials.
-    $dbhost = "DB_HOST";
-    $dbuser = "DB_USER";
-    $dbpass = "DB_USER_PASSWORD";
-    $db = "DB_NAME";
+    $dbhost = "localhost";
+    $dbuser = "becode";
+    $dbpass = "becode123";
+    $db = "fixbug";
 
     $driverOptions = [
         PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
@@ -104,3 +163,4 @@ if(empty($selectedUser['id'])) {
 
 require 'view.php';
 // All bugs where written with Love for the learning Process. No actual bugs where harmed or eaten during the creation of this code.
+
