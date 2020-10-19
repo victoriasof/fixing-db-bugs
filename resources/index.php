@@ -83,12 +83,14 @@ $pdo = openConnection();
 
 if(!empty($_POST['firstname']) && !empty($_POST['lastname'])) {
     //@todo possible bug below?
-    if(!empty($_POST['id'])) {
+    if(empty($_POST['id'])) {
+        //removed exclamation mark, because there was a logic error: if not empty then don't use it, else if empty then use it.
         $handle = $pdo->prepare('INSERT INTO user (firstname, lastname, year) VALUES (:firstname, :lastname, :year)');
         $message = 'Your record has been added';
-    } else {
+    } else { //if not empty then use it
         //@todo why does this not work?
-        $handle = $pdo->prepare('UPDATE user VALUES (firstname = :firstname, lastname = :lastname, year = :year) WHERE id = :id');
+        $handle = $pdo->prepare('UPDATE user SET (firstname = :firstname, lastname = :lastname, year = :year) WHERE id = :id');
+        // changed VALUE to SET
         $handle->bindValue(':id', $_POST['id']);
         $message = 'Your record has been updated';
     }
@@ -105,17 +107,20 @@ if(!empty($_POST['firstname']) && !empty($_POST['lastname'])) {
         $userId = $_POST['id'];
     } else {
         //why did I leave this if empty? There must be no important reason for this. Move on.
-    }
 
-    //@todo Why does this loop not work? If only I could see the bigger picture.
-    foreach($_POST['sports'] AS $sport) {
-        $userId = $pdo->lastInsertId();
 
-        $handle = $pdo->prepare('INSERT INTO sport (user_id, sport) VALUES (:userId, :sport)');
-        $handle->bindValue(':userId', $userId);
-        $handle->bindValue(':sport', $sport);
-        $handle->execute();
-    }
+        //@todo Why does this loop not work? If only I could see the bigger picture.
+        foreach ($_POST['sports'] as $sport) {
+            $userId = $pdo->lastInsertId();
+
+            $handle = $pdo->prepare('INSERT INTO sport (user_id, sport) VALUES (:userId, :sport)');
+            $handle->bindValue(':userId', $userId);
+            $handle->bindValue(':sport', $sport);
+            $handle->execute();
+        }
+
+    } //inserted foreach loop in the else statement
+
 }
 elseif(isset($_POST['delete'])) {
     //@todo BUG? Why does always delete all my users?
