@@ -32,11 +32,11 @@
             <td><?php echo htmlspecialchars($user['sport'])?></td>
             <td><?php echo htmlspecialchars($user['name'])?></td>
             <td>
-                <a href="?id=<?php echo $user['user_id'] //changed id to user_id ?>" class="btn btn-primary">Update</a>
+                <a href="?id=<?php echo $user['id'] //changed user_id back to id ?>" class="btn btn-primary">Update</a>
             </td>
             <td>
                 <form method="post">
-                    <input type="hidden" name="id" value="<?php echo $user['user_id'] //changed id to user_id ?>" />
+                    <input type="hidden" name="id" value="<?php echo $user['id'] //changed user_id back to id?>" />
                     <input type="submit" name="delete" value="Delete" class="btn btn-danger">
                 </form>
             </td>

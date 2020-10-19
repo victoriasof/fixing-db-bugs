@@ -89,7 +89,7 @@ if(!empty($_POST['firstname']) && !empty($_POST['lastname'])) {
         $message = 'Your record has been added';
     } else { //if not empty then use it
         //@todo why does this not work?
-        $handle = $pdo->prepare('UPDATE user SET (firstname = :firstname, lastname = :lastname, year = :year) WHERE id = :id');
+        $handle = $pdo->prepare('UPDATE user SET firstname = :firstname, lastname = :lastname, year = :year WHERE id = :id');
         // changed VALUE to SET
         $handle->bindValue(':id', $_POST['id']);
         $message = 'Your record has been updated';
@@ -107,23 +107,22 @@ if(!empty($_POST['firstname']) && !empty($_POST['lastname'])) {
         $userId = $_POST['id'];
     } else {
         //why did I leave this if empty? There must be no important reason for this. Move on.
+        $userId = $pdo->lastInsertId();
 
+            //@todo Why does this loop not work? If only I could see the bigger picture.
 
-        //@todo Why does this loop not work? If only I could see the bigger picture.
-        foreach ($_POST['sports'] as $sport) {
-            $userId = $pdo->lastInsertId();
+    }
 
-            $handle = $pdo->prepare('INSERT INTO sport (user_id, sport) VALUES (:userId, :sport)');
-            $handle->bindValue(':userId', $userId);
-            $handle->bindValue(':sport', $sport);
-            $handle->execute();
-        }
+    foreach ($_POST['sports'] as $sport) {
 
-    } //inserted foreach loop in the else statement
+        $handle = $pdo->prepare('INSERT INTO sport (user_id, sport) VALUES (:userId, :sport)');
+        $handle->bindValue(':userId', $userId);
+        $handle->bindValue(':sport', $sport);
+        $handle->execute();
+    }
+
 
 }
-
-//if(!empty($_POST['firstname']) && !empty($_POST['lastname'])) {
 
 elseif(isset($_POST['delete'])) {
     //@todo BUG? Why does always delete all my users?
