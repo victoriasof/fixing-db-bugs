@@ -133,7 +133,8 @@ elseif(isset($_POST['delete'])) {
 }
 
 //@todo Invalid query?
-$handle = $pdo->prepare('SELECT id, concat_ws(firstname, lastname, " ") AS name, sport FROM user LEFT JOIN sport ON id = sport.user_id where year = :year order by sport');
+$handle = $pdo->prepare('SELECT user_id, concat_ws(firstname, lastname, " ") AS name, sport FROM user LEFT JOIN sport ON user_id = sport.user_id where year = :year order by sport');
+//inserted user_id instead of id
 $handle->bindValue(':year', date('Y'));
 $handle->execute();
 $users = $handle->fetchAll();
