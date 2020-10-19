@@ -122,6 +122,9 @@ if(!empty($_POST['firstname']) && !empty($_POST['lastname'])) {
     } //inserted foreach loop in the else statement
 
 }
+
+//if(!empty($_POST['firstname']) && !empty($_POST['lastname'])) {
+
 elseif(isset($_POST['delete'])) {
     //@todo BUG? Why does always delete all my users?
     $handle = $pdo->prepare('DELETE FROM user');
